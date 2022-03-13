@@ -26,7 +26,7 @@ To get vertex statistics we will use combination of hash map and list:
 * ```
   struct Node {
     size_t rank;
-    std::vector<std::string_view> urls;
+    std::unordered_set<std::string_view> urls;
   }
 * `list<Node>` -- stores `<rank, urls>` in sorted order
 * `std::unordered<std::string_view, std::unique_ptr<Node>>` -- 
@@ -36,4 +36,4 @@ So when we add an url, we're either creating new node or adding the url to a vec
 
 When we add hyperlink (increasing indegree of some url) we're locating node, where url is located, extracting url from it and move it to the next node, which is appropriate to `rank + 1` (or create one).
 
-Asymptotic time is O(1) in average.
+Asymptotic time is O(1) in average for top5 and linear foarbitrary size.
