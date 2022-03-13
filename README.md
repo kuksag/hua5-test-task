@@ -24,12 +24,12 @@ Asymptotic time for query is O(|Trie|) or O(|Answer size|)
 
 To get vertex statistics we will use combination of hash map and list:
 * ```
-  struct Node {
+  struct ListNode {
     size_t rank;
     std::unordered_set<std::string_view> urls;
   }
-* `list<Node>` -- stores `<rank, urls>` in sorted order
-* `std::unordered<std::string_view, std::unique_ptr<Node>>` -- 
+* `list<ListNode>` -- stores `<rank, urls>` in sorted order
+* `std::unordered<std::string_view, std::unique_ptr<ListNode>>` -- 
 stores appropriate list node
 
 So when we add an url, we're either creating new node or adding the url to a vector in an existing node.

@@ -87,3 +87,35 @@ TEST_CASE("Check query_top_five") {
           }
     );
 }
+
+TEST_CASE("Check trie") {
+    typedef std::vector<std::string> vs;
+
+    Crawler::Crawler crawler{};
+
+    vs urls{
+        "abacaba",
+        "abacab",
+        "abaca",
+        "abac",
+        "aba",
+        "ab",
+        "a",
+        "foo",
+    };
+
+    for (std::string &url: urls) {
+        crawler.add_url(url);
+    }
+
+    CHECK(crawler.query_list_of_pages_with_given_prefix("foo") == vs{"foo"});
+    CHECK(crawler.query_list_of_pages_with_given_prefix("bar") == vs{});
+
+    CHECK(crawler.query_list_of_pages_with_given_prefix("a").size() == urls.size() - 1);
+    CHECK(crawler.query_list_of_pages_with_given_prefix("ab").size() == urls.size() - 2);
+    CHECK(crawler.query_list_of_pages_with_given_prefix("aba").size() == urls.size() - 3);
+    CHECK(crawler.query_list_of_pages_with_given_prefix("abac").size() == urls.size() - 4);
+    CHECK(crawler.query_list_of_pages_with_given_prefix("abaca").size() == urls.size() - 5);
+    CHECK(crawler.query_list_of_pages_with_given_prefix("abacab").size() == urls.size() - 6);
+    CHECK(crawler.query_list_of_pages_with_given_prefix("abacaba").size() == urls.size() - 7);
+}
